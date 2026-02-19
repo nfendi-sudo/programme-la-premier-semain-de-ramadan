@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>برنامج المراجعة - الأسبوع الأول من رمضان</title>
+    <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-light: #1e293b;
+            --gold: #d4af37;
+            --paper-bg: #fffbf0;
+            --text-dark: #1e293b;
+            --accent-red: #991b1b;
+            --accent-blue: #1d4ed8;
+            --accent-green: #166534;
+            --font-main: 'Cairo', sans-serif;
+            --font-title: 'Aref Ruqaa', serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-light) 100%);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        .decoration-top {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: -15px;
+            z-index: 10;
+            position: relative;
+            text-shadow: 0 0 15px var(--gold);
+        }
+
+        .schedule-container {
+            max-width: 950px;
+            margin: 0 auto;
+            background-color: var(--paper-bg);
+            border: 4px solid var(--gold);
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background-image: radial-gradient(var(--gold) 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px dashed var(--gold);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-family: var(--font-title);
+            color: var(--gold);
+            font-size: 2.8rem;
+            margin: 10px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            background: var(--bg-dark);
+            display: inline-block;
+            padding: 5px 30px;
+            border-radius: 15px;
+        }
+
+        /* الملاحظة الصباحية الثابتة */
+        .morning-routine {
+            background: #fef3c7;
+            border-right: 5px solid #d97706;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .morning-routine strong { color: #d97706; font-size: 1.2rem; }
+
+        /* بطاقات الأيام */
+        .day-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .day-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--gold);
+            box-shadow: 0 6px 12px rgba(212, 175, 55, 0.2);
+        }
+
+        .day-title {
+            background: var(--bg-dark);
+            color: var(--gold);
+            padding: 12px 20px;
+            font-family: var(--font-title);
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .day-title::before {
+            content: "🌙";
+            margin-left: 10px;
+            font-size: 1.5rem;
+        }
+
+        .task-list {
+            padding: 20px;
+        }
+
+        .task-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #cbd5e1;
+        }
+
+        .task-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .task-label {
+            width: 140px;
+            flex-shrink: 0;
+            font-weight: 800;
+            color: var(--accent-red);
+            font-size: 1.1rem;
+        }
+
+        .task-desc {
+            flex-grow: 1;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* التنسيقات الخاصة بالديسكورد والشعب */
+        .discord-alert {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            margin-top: 5px;
+            border: 1px solid #c7d2fe;
+        }
+
+        .discord-alert::before { content: "🎧 "; }
+
+        .track-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-left: 8px;
+            margin-bottom: 5px;
+            color: white;
+        }
+        .track-sc { background-color: var(--accent-green); } /* شعبة علوم */
+        .track-mt { background-color: var(--accent-blue); }  /* شعبة تقني رياضي */
+
+        /* زر الطباعة */
+        .btn-print {
+            display: block;
+            width: 250px;
+            margin: 30px auto 10px;
+            padding: 15px;
+            background: var(--gold);
+            color: var(--bg-dark);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            font-family: var(--font-title);
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .btn-print, .decoration-top { display: none; }
+            .schedule-container { border: none; box-shadow: none; background-image: none; padding: 10px; }
+            .day-card { border: 1px solid #000; break-inside: avoid; }
+            .day-title { background: #eee; color: #000; border-bottom: 2px solid #000; }
+            .track-badge, .discord-alert { border: 1px solid #000; color: #000; background: transparent !important;}
+        }
+    </style>
+</head>
+<body>
+
+<div class="decoration-top">
+    ✨ 🏮 🌙 🏮 ✨
+</div>
+
+<div class="schedule-container">
+    <div class="header">
+        <h1>برنامج المراجعة - الأسبوع الأول</h1>
+        <p style="font-size: 1.2rem; font-weight: bold; color: #555;">(من الجمعة إلى الاثنين)</p>
+    </div>
+
+    <div class="morning-routine">
+        <strong>☀️ الورد الصباحي الثابت (يومياً):</strong><br>
+        تُخصص الفترة الصباحية لـ <strong>الحفظ</strong> (التقدم في دروس التاريخ والجغرافيا للفصل الثاني). <br>
+        <em>الطريقة:</em> بالتناوب (يوم مخصص لحفظ التاريخ، واليوم الذي يليه مخصص لحفظ الجغرافيا).
+    </div>
+
+    <div class="day-card">
+        <div class="day-title">يوم الجمعة</div>
+        <div class="task-list">
+            <div class="task-item">
+                <div class="task-label">المادة الأدبية:</div>
+                <div class="task-desc">دراسة <strong>الشعر الحر</strong> مع مناقشة موضوع شامل.</div>
+            </div>
+            <div class="task-item">
+                <div class="task-label">المادة الأساسية 1:</div>
+                <div class="task-desc">
+                    رياضيات: سلسلة تمارين في محور <strong>المتتاليات</strong>.<br>
+                    <span class="discord-alert">ملاحظة: تُستبدل حصة هذه المادة بحصة ديسكورد لدراسة الشعر الحر والمناقشة.</span>
+                </div>
+            </div>
+            <div class="task-item">
+                <div class="task-label">المادة الأساسية 2:</div>
+                <div class="task-desc">
+                    <span class="track-badge track-sc">شعبة علوم</span> علوم طبيعية (مراجعة وحل).<br>
+                    <span class="track-badge track-mt">شعبة تقني</span> هندسة مدنية: دراسة <strong>مظهر طولي</strong>.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="day-card">
+        <div class="day-title">يوم السبت</div>
+        <div class="task-list">
+            <div class="task-item">
+                <div class="task-label">المادة الأدبية:</div>
+                <div class="task-desc">دراسة <strong>الشعر الاجتماعي</strong> كاملاً مع مناقشة تفصيلية لكل محور (البناء الفكري).</div>
+            </div>
+            <div class="task-item">
+                <div class="task-label">المادة الأساسية 1:</div>
+                <div class="task-desc">
+                    <span class="discord-alert">حصة ديسكورد: استكمال ومناقشة الشعر الاجتماعي.</span>
+                </div>
+            </div>
+            <div class="task-item">
+                <div class="task-label">المادة الأساسية 2:</div>
+                <div class="task-desc">
+                    فيزياء: مراجعة محور <strong>الميكانيك</strong>.<br>
+                    - حل أسئلة نظرية من الأستاذ عبد الله.<br>
+                    - تدوين وتنظيم أفكار من الأستاذ طيايبة.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="day-card">
+        <div class="day-title">يوم الأحد</div>
+        <div class="task-list">
+            <div class="task-item">
+                <div class="task-label">المادة الأدبية (مساءً):</div>
+                <div class="task-desc">حل موضوعين شاملين في مادة <strong>العلوم الإسلامية</strong>.</div>
+            </div>
+            <div class="task-item">
+                <div class="task-label">المادة الأساسية 1:</div>
+                <div class="task-desc">
+                    <span class="track-badge track-sc">شعبة علوم</span> رياضيات: تمارين مكثفة في المتتاليات.<br>
+                    <span class="track-badge track-mt">شعبة تقني/رياضي</span> رياضيات: الانطلاقة في محور <strong>الجبر</strong>.
+                </div>
+            </div>
+            <div class="task-item">
+                <div class="task-label">المادة الأساسية 2:</div>
+                <div class="task-desc">
+                    <span class="track-badge track-sc">شعبة علوم</span> علوم طبيعية: حل مواضيع لمراجعة ما سبق.<br>
+                    <span class="track-badge track-mt">شعبة تقني</span> هندسة مدنية: تمارين تطبيقية حول المظهر الطولي.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="day-card">
+        <div class="day-title">يوم الاثنين</div>
+        <div class="task-list">
+            <div class="task-item">
+                <div class="task-label">المادة الأدبية:</div>
+                <div class="task-desc">حل سلسلة مواضيع في <strong>الأدب العربي</strong>.</div>
+            </div>
+            <div class="task-item">
+                <div class="task-label">المادة الأساسية 1:</div>
+                <div class="task-desc">رياضيات: واجب يتضمن حل <strong>موضوعين شاملين</strong>.</div>
+            </div>
+            <div class="task-item">
+                <div class="task-label">المادة الأساسية 2:</div>
+                <div class="task-desc">فيزياء: واجب شامل للمحاور الثلاثة الأولى (مراجعة وتثبيت المكتسبات).</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<button class="btn-print" onclick="window.print()">🖨️ طباعة البرنامج الدراسي</button>
+
+</body>
+</html>
